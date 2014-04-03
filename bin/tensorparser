@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+import tensorparser
+
+f90_format = tensorparser.FortranFormat()
+
+def process(N,T,V):
+  tp = tensorparser.TensorParser(N,T,V)
+  print f90_format.declareFunction(tp)
+
+process('T_hire      ', "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x")

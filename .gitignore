@@ -1,3 +1,4 @@
 .idea
 build
 tensorparser.egg-info
+*.pyc
