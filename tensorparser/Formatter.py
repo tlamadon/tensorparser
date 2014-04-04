@@ -25,6 +25,7 @@ class Formatter(ast.NodeVisitor):
     self.LHS = 'R'
     self.indexAsSizes = False
     self.COMMENT = "//"
+    self.FILE_EXTENSION = "txt"
     pass
 
   def visit_wrap(self,n):
@@ -203,3 +204,9 @@ class Formatter(ast.NodeVisitor):
     return self.LHS + "= 0"
   def addComment(self,s):
     return self.COMMENT + ' ' + s
+  def getFileExtension(self):
+    return "." + self.FILE_EXTENSION
+  def declareModuleHeader(self,name):
+    return "Module file header"
+  def declareModuleFooter(self,name):
+    return "Module file footer"

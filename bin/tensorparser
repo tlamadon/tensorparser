@@ -1,11 +1,48 @@
 #!/usr/bin/env python
 
 import tensorparser
+import argparse
+import json
 
-f90_format = tensorparser.FortranFormat()
 
-def process(N,T,V):
-  tp = tensorparser.TensorParser(N,T,V)
-  print f90_format.declareFunction(tp)
+## Defining arguments
+parser = argparse.ArgumentParser(
+  description ='Parses a json file with a list of tensors and generates a module file',
+  epilog      ="that's all")
 
-process('T_hire      ', "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x")
+parser.add_argument('infile')
+parser.add_argument('-f',action='store',help='output format')
+parser.add_argument('-v',action='store_true',help='verbose output')
+args = parser.parse_args()
+
+# parse the json file
+# -------------------
+with open(args.infile) as data_file:
+  data = json.load(data_file)
+
+# get the format
+formats = {
+  "f90" : tensorparser.FortranFormat(),
+  "jl"  : tensorparser.JuliaFormat(),
+}
+
+# check that format is available
+if args.f not in formats.keys():
+  print "this format is not available"
+
+# process the file and write to output
+else:
+  ff = formats[args.f]
+
+  # open the file
+  file_out = open(data["module_name"] + ff.getFileExtension(), 'w')
+  file_out.write(ff.declareModuleHeader(data["module_name"]).encode('utf-8'))
+
+  # iterate over the tensors and save them to the file
+  for nn,tensor in data["tensors"].iteritems():
+    tp = tensorparser.TensorParser(nn,tensor["expr"],tensor["args"])
+    file_out.write(ff.declareFunction(tp).encode('utf-8'))
+
+  # close the file
+  file_out.write(ff.declareModuleFooter(data["module_name"]).encode('utf-8'))
+  file_out.close()

@@ -11,12 +11,13 @@ class FortranFormat(Formatter.Formatter):
     self.SUBSCRIPT_R = ')'
     self.POW = '**'
     self.COMMENT ="!"
+    self.FILE_EXTENSION="f90"
 
   def func_header(self,tp):
     return ""
 
   def func_footer(self,tp):
-    return "end function"
+    return "end function" + self.CR
 
   def declareTensor(self,t):
     return "double precision " + t.name + "(" + ",".join([ ":" for i in range(0,t.dim)]) + ")" +self.CR
@@ -62,3 +63,9 @@ class FortranFormat(Formatter.Formatter):
     self.content += 'MERGE(1D0,0D0,'
     self.visit(node)
     self.content += ')'
+
+  def declareModuleHeader(self,name):
+    return "module " + name +self.CR + "contains" + self.CR
+
+  def declareModuleFooter(self,name):
+    return "end module "+ self.CR
