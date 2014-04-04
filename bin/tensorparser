@@ -41,6 +41,7 @@ else:
   # iterate over the tensors and save them to the file
   for nn,tensor in data["tensors"].iteritems():
     tp = tensorparser.TensorParser(nn,tensor["expr"],tensor["args"])
+    print "generating " + tp.name + " [ " + str(tp) + " ] "
     file_out.write(ff.declareFunction(tp).encode('utf-8'))
 
   # close the file
