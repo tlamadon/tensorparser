@@ -2,6 +2,7 @@
  "module_name":"atensor",
 
  "tensors": {
+    
     "T_hire" : {
         "expr" : "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]",
         "args" : "x"

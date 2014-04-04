@@ -13,11 +13,6 @@ class FortranFormat(Formatter.Formatter):
     self.COMMENT ="!"
     self.FILE_EXTENSION="f90"
 
-  def func_header(self,tp):
-    return ""
-
-  def func_footer(self,tp):
-    return "end function" + self.CR
 
   def declareTensor(self,t):
     return "double precision " + t.name + "(" + ",".join([ ":" for i in range(0,t.dim)]) + ")" +self.CR
@@ -69,3 +64,6 @@ class FortranFormat(Formatter.Formatter):
 
   def declareModuleFooter(self,name):
     return "end module "+ self.CR
+
+  def func_footer(self,tp):
+    return "end function" + self.CR

@@ -11,6 +11,7 @@ class JuliaFormat(Formatter.Formatter):
     self.SUBSCRIPT_R = ']'
     self.POW = '^'
     self.COMMENT ="#"
+    self.FILE_EXTENSION="jl"
 
   def func_header(self,tp):
     return ""
@@ -19,16 +20,13 @@ class JuliaFormat(Formatter.Formatter):
     return "end"
 
   def declareTensor(self,t):
-    return "double precision " + t.name + "(" + ",".join([ ":" for i in range(0,t.dim)]) + ")" +self.CR
+    return ""
 
   def declareResult(self,tp,sizes):
-    return "double precision " + tp.name   + "("+ ",".join(sizes) + ")"
+    return tp.name + " = zeros("+ ",".join(sizes) + ")"
 
   def declareIndex(self,t):
-    return "integer " + t +self.CR
-
-  def visit_Num(self,node):
-    self.content += str(node.n) +'D0'
+    return ""
 
   def declareCall(self,tp,sizes):
     args = [t.name for t in tp.tensors]
@@ -56,3 +54,12 @@ class JuliaFormat(Formatter.Formatter):
     self.content += '('
     self.visit(node)
     self.content += ')'
+
+  def func_footer(self,tp):
+    return tp.name + self.CR+ "end" + self.CR
+
+  def declareModuleHeader(self,name):
+    return "module " + name +self.CR
+
+  def declareModuleFooter(self,name):
+    return self.CR + "end"+ self.CR

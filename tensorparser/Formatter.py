@@ -172,6 +172,7 @@ class Formatter(ast.NodeVisitor):
       s += sp(indent) + self.declareLoopOut(i) + self.CR
 
     s += self.func_footer(tp)
+
     return s
 
   def declareTensor(self,t):
@@ -210,3 +211,9 @@ class Formatter(ast.NodeVisitor):
     return "Module file header"
   def declareModuleFooter(self,name):
     return "Module file footer"
+
+  def func_header(self,tp):
+      return ""
+
+  def func_footer(self,tp):
+    return "" + self.CR
