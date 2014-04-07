@@ -110,15 +110,17 @@ class Formatter(ast.NodeVisitor):
     self.visit_wrap(x2)
     self.content += ')'
 
+  def declareExtractIndexRange(self,iname,tname,dim):
+    return "int " + iname + " = dim(" + tname + ")[" + str(dim) + "]"
+
   def declareFunction(self,tp):
     """
     generate the full function
     """
 
     # extract sizes
-    sizes = set([self.getIndexBound(ii) for ii in (tp.index_rest| set(tp.index_out) )])
-
-    sp = lambda x: "".join([ " " for i in range(0,x)])
+    sizes = tp.getSizesSet()
+    sp = lambda x: "".join([ " " for i in range(0,x)]) # function that indents
 
     # get result
     self.LHS = self.RES_NAME + self.SUBSCRIPT_L + ",".join(tp.index_out) + self.SUBSCRIPT_R
@@ -132,9 +134,6 @@ class Formatter(ast.NodeVisitor):
     # print function signature
     s += self.declareCall(tp,sizes) + self.CR
 
-    # print objects declarations
-    for t in sizes:
-      s += self.declareIndex(t)
     for t in tp.index_out:
       s += self.declareIndex(t)
     for t in tp.index_rest:
@@ -145,19 +144,19 @@ class Formatter(ast.NodeVisitor):
       s += self.declareScalar(t)
 
     # declare result
-    s += self.declareResult(tp,[self.getIndexBound(i) for i in tp.index_out]) + self.CR
+    s += self.declareResult(tp,[tp.getIndexName(i) for i in tp.index_out]) + self.CR
 
     # create loops or out indexes
     indent = 0
     for i in tp.index_out:
-      s += sp(indent) + self.declareLoopIn(i) + self.CR
+      s += sp(indent) + self.declareLoopIn(i,tp.getIndexName(i)) + self.CR
       indent+=1
 
     # initialing the result to 0
     s += sp(indent) + self.declareSetResultTozero() + self.CR
 
     for i in tp.index_rest:
-      s += sp(indent) + self.declareLoopIn(i) + self.CR
+      s += sp(indent) + self.declareLoopIn(i,tp.getIndexName(i)) + self.CR
       indent+=1
 
     # append formula
@@ -189,16 +188,8 @@ class Formatter(ast.NodeVisitor):
     et_str = self.content
     return self.LHS + " =  " + self.LHS + "+" + et_str
 
-  def getIndexBound(self,index):
-    """
-    if index is x1, returns nx,
-    in other words, remove the numbers at the end
-
-    """
-    return "n" + re.search("(.*[a-zA-Z])[0-9]*$", index).group(1)
-
-  def declareLoopIn(self,i):
-    return "for " + i + " = 1:" +  self.getIndexBound(i)
+  def declareLoopIn(self,i,size):
+    return "for " + i + " = 1:" +  self.getIndexName(i)
   def declareLoopOut(self,i):
     return "end"
   def declareSetResultTozero(self):

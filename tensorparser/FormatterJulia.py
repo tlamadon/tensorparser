@@ -23,7 +23,7 @@ class JuliaFormat(Formatter.Formatter):
     return ""
 
   def declareResult(self,tp,sizes):
-    return tp.name + " = zeros("+ ",".join(sizes) + ")"
+    return self.RES_NAME + " = zeros("+ ",".join(sizes) + ")"
 
   def declareIndex(self,t):
     return ""
@@ -35,17 +35,25 @@ class JuliaFormat(Formatter.Formatter):
     if len(tp.scalars)>0:
       s += "," + ",".join(tp.scalars)
     s += ")"
+
+    s += self.CR
+
+    # extract sizes from inputs
+    for ss in sizes :
+      tname,dim = tp.getIndexSize(ss)
+      s += ss + " = size(" + tname + ")[" + str(dim+1) + "]" + self.CR
+
     return s
 
   def getResName(self,tp):
     return tp.name
 
   def declareFunction(self,tp):
-    self.RES_NAME = tp.name
+    self.RES_NAME = "Res" #tp.name
     return Formatter.Formatter.declareFunction(self,tp)
 
-  def declareLoopIn(self,i):
-    return "for " + i + " in 1:" +  self.getIndexBound(i)
+  def declareLoopIn(self,i,size):
+    return "for " + i + " in 1:" +  size
 
   def declareLoopOut(self,i):
     return "end"
@@ -56,7 +64,7 @@ class JuliaFormat(Formatter.Formatter):
     self.content += ')'
 
   def func_footer(self,tp):
-    return tp.name + self.CR+ "end" + self.CR
+    return "return " + self.RES_NAME + self.CR+ "end" + self.CR
 
   def declareModuleHeader(self,name):
     return "module " + name +self.CR

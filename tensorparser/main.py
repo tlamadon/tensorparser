@@ -13,14 +13,10 @@ can generate fortran, c++, or anything else that can be useful
 
 
 import ast
-import TensorParser
-import FormatterFortran
-
-f90_format = FormatterFortran.FortranFormat()
-
-def process(N,T,V):
-  tp = TensorParser.TensorParser(N,T,V)
-  print f90_format.declareFunction(tp)
+import tensorparser.FormatterJulia
+format = tensorparser.FormatterJulia.JuliaFormat()
+tp = tensorparser.TensorParser("T_hire      " , "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x")
+print format.declareFunction(tp)
 
 
 #process("T_P0_1     " , "max(0,S[x1,y] - S[x1,y1]-Z[z1]) * G[z1] * H[x1,y1]","y")
@@ -35,9 +31,13 @@ def process(N,T,V):
 #process("T_pr0_1    " , "I(S[x,y] -Z[z1]  > S[x,y2]       ) * G[z1] * H[x,y2] ","y")
 #process("T_pr1      " , "I(S[x,y]        < S[x,y2] -Z[z1] ) * G[z1] * V[y2]","y")
 
-process("T_hire      " , "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x")
-process("T_sep      " , "I(S[x,y2] < 0 ) * H[x,y2]","x")
-
-process("T_fill0      " , "I(S[x2,y] - Z[z1] >= 0 ) * G[z1] * U[x2]","y")
-process("T_fill1      " , "I(S[x2,y] - Z[z1] >= S[x2,y2] ) * G[z1] * H[x2,y2]","y")
-process("T_leave      " , "I(S[x,y2] - Z[z1] > S[x,y] )   * V[y2] * G[z1] * H[x,y]","y")
+#process("T_hire      " , "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x")
+#
+#
+#
+#
+#process("T_sep      " , "I(S[x,y2] < 0 ) * H[x,y2]","x")
+#
+#process("T_fill0      " , "I(S[x2,y] - Z[z1] >= 0 ) * G[z1] * U[x2]","y")
+#process("T_fill1      " , "I(S[x2,y] - Z[z1] >= S[x2,y2] ) * G[z1] * H[x2,y2]","y")
+#process("T_leave      " , "I(S[x,y2] - Z[z1] > S[x,y] )   * V[y2] * G[z1] * H[x,y]","y")

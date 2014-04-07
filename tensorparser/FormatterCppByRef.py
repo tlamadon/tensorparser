@@ -51,7 +51,7 @@ class CppByRefFormat(Formatter.Formatter):
     return self.LHS + "= 0D0"
 
   def declareLoopIn(self,i):
-    return "do " + i + " = 1," +  self.getIndexBound(i)
+    return "do " + i + " = 1," +  self.getIndexName(i)
   def declareLoopOut(self,i):
     return "end do"
   def visit_Indicator(self,node):
