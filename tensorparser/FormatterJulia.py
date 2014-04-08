@@ -58,7 +58,7 @@ class JuliaFormat(Formatter.Formatter):
     return Formatter.Formatter.declareFunction(self,tp)
 
   def declareLoopIn(self,i,size):
-    return "for " + i + " in 1:" +  size
+    return "for " + i + " = 1:" +  size
 
   def declareLoopOut(self,i):
     return "end"
