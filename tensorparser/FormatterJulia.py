@@ -9,9 +9,12 @@ class JuliaFormat(Formatter.Formatter):
     Formatter.Formatter.__init__(self)
     self.SUBSCRIPT_L = '['
     self.SUBSCRIPT_R = ']'
-    self.POW = '^'
+    self.POW = '.^'
     self.COMMENT ="#"
     self.FILE_EXTENSION="jl"
+    self.BinOpMid = { "Mult":".*", "Add":".+", "Div":"./", "Sub":".-" }
+    self.Compare = { "Gt":".>","GtE":".>=","Lt":".<","LtE":".<=" }
+    self.INDEX_LINEARISE =1
 
   def func_header(self,tp):
     return ""
@@ -43,6 +46,8 @@ class JuliaFormat(Formatter.Formatter):
       tname,dim = tp.getIndexSize(ss)
       s += ss + " = size(" + tname + ")[" + str(dim+1) + "]" + self.CR
 
+    s += "@inbounds begin"
+
     return s
 
   def getResName(self,tp):
@@ -64,10 +69,15 @@ class JuliaFormat(Formatter.Formatter):
     self.content += ')'
 
   def func_footer(self,tp):
-    return "return " + self.RES_NAME + self.CR+ "end" + self.CR
+    s = "end" + self.CR
+    s += "return " + self.RES_NAME + self.CR+ "end" + self.CR
+    return s
 
-  def declareModuleHeader(self,name):
-    return "module " + name +self.CR
+  def declareModuleHeader(self,name,tensors):
+    rr = "module " + name +self.CR
+    rr += "export " + ",".join(tensors)
+    return rr
+
 
   def declareModuleFooter(self,name):
     return self.CR + "end"+ self.CR

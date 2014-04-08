@@ -36,7 +36,7 @@ else:
 
   # open the file
   file_out = open(data["module_name"] + ff.getFileExtension(), 'w')
-  file_out.write(ff.declareModuleHeader(data["module_name"]).encode('utf-8'))
+  file_out.write(ff.declareModuleHeader(data["module_name"],data["tensors"].keys()).encode('utf-8'))
 
   # iterate over the tensors and save them to the file
   for nn,tensor in data["tensors"].iteritems():

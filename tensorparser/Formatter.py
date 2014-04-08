@@ -26,6 +26,8 @@ class Formatter(ast.NodeVisitor):
     self.indexAsSizes = False
     self.COMMENT = "//"
     self.FILE_EXTENSION = "txt"
+    self.INDEX_LINEARISE = 0 # 0 for multidimensional, 1 for linear starting at 0, 2 for starting at 1
+    self.tp = None
     pass
 
   def visit_wrap(self,n):
@@ -51,8 +53,22 @@ class Formatter(ast.NodeVisitor):
     self.content += self.SUBSCRIPT_R
 
   def visit_Tuple(self,node):
+    """ generates the multi-dimensional array, it would a good idea
+        to allow to generate a linear index x1 + nx*( y2 - 1)
+    """
     IS = [e.id for e in node.elts]
-    self.content += ",".join(IS)
+    if (self.INDEX_LINEARISE==0):
+      self.content += ",".join(IS)
+    else:
+      prev= ""
+      for e in reversed(IS):
+        if (prev==""):
+          EE = e
+        else:
+          EE = e + " + " + self.tp.getIndexName(e) + " * (" + EE + "-1)"
+        prev = e
+      self.content += EE
+
 
   def visit_Call(self,node):
     if (node.func.id=='I'):
@@ -117,6 +133,8 @@ class Formatter(ast.NodeVisitor):
     """
     generate the full function
     """
+
+    self.tp = tp
 
     # extract sizes
     sizes = tp.getSizesSet()
@@ -186,7 +204,7 @@ class Formatter(ast.NodeVisitor):
   def declareFormula(self,tp):
     self.visit(tp.Et)
     et_str = self.content
-    return self.LHS + " =  " + self.LHS + "+" + et_str
+    return self.LHS + " =  " + self.LHS + self.BinOpMid["Add"] + et_str
 
   def declareLoopIn(self,i,size):
     return "for " + i + " = 1:" +  self.getIndexName(i)
@@ -198,7 +216,7 @@ class Formatter(ast.NodeVisitor):
     return self.COMMENT + ' ' + s
   def getFileExtension(self):
     return "." + self.FILE_EXTENSION
-  def declareModuleHeader(self,name):
+  def declareModuleHeader(self,name,tensors=set()):
     return "Module file header"
   def declareModuleFooter(self,name):
     return "Module file footer"

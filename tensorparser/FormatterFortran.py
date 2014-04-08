@@ -50,8 +50,8 @@ class FortranFormat(Formatter.Formatter):
   def declareSetResultTozero(self):
     return self.LHS + "= 0D0"
 
-  def declareLoopIn(self,i):
-    return "do " + i + " = 1," +  self.getIndexName(i)
+  def declareLoopIn(self,i,s):
+    return "do " + i + " = 1," +  s
   def declareLoopOut(self,i):
     return "end do"
   def visit_Indicator(self,node):
@@ -59,7 +59,7 @@ class FortranFormat(Formatter.Formatter):
     self.visit(node)
     self.content += ')'
 
-  def declareModuleHeader(self,name):
+  def declareModuleHeader(self,name,tensors):
     return "module " + name +self.CR + "contains" + self.CR
 
   def declareModuleFooter(self,name):
