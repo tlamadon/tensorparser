@@ -59,7 +59,7 @@ class CppByRefFormat(Formatter.Formatter):
     self.visit(node)
     self.content += ')'
 
-  def declareModuleHeader(self,name):
+  def declareModuleHeader(self,name,tensors):
     return "module " + name +self.CR + "contains" + self.CR
 
   def declareModuleFooter(self,name):

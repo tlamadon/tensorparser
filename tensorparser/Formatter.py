@@ -216,7 +216,7 @@ class Formatter(ast.NodeVisitor):
     return self.COMMENT + ' ' + s
   def getFileExtension(self):
     return "." + self.FILE_EXTENSION
-  def declareModuleHeader(self,name,tensors=set()):
+  def declareModuleHeader(self,name,tensors):
     return "Module file header"
   def declareModuleFooter(self,name):
     return "Module file footer"

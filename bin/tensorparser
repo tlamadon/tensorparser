@@ -4,7 +4,6 @@ import tensorparser
 import argparse
 import json
 
-
 ## Defining arguments
 parser = argparse.ArgumentParser(
   description ='Parses a json file with a list of tensors and generates a module file',

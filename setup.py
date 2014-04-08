@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(name='tensorparser',
-      version='0.1',
+      version='0.11',
       description='Generate code from tensor expressions',
-      url='http://github.com/storborg/funniest',
+      url='https://github.com/tlamadon/tensorparser',
       author='Thibaut Lamadon',
       author_email='thibaut.lamadon@gmail.com',
       license='MIT',

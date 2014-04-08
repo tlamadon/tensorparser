@@ -21,6 +21,26 @@ Install using pip or easy_install
     
 ## usage
 
-Createa a json file that describes a module that will include a list of tensors. Then run tensorparser, and the file will be generated.
+Create a json file that describes a module that will include a list of tensors. Then run tensorparser,
+and the file will be generated. Here is an example of a file called `mytensors.json`:
 
+        {
+         "module_name":"atensor",
+         "tensors": {
+            "T_hire" : {
+                "expr" : "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]",
+                "args" : "x"
+            },
+            "T_fire" : {
+             "expr" : "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]",
+             "args" : "x"
+            }
+          }
+        }
+
+finally generate julia code using `-f jl` or Fortran code with `-f f90`. More format are to come.
+
+     tensorparser -f jl mytensors.json
+
+which generates
 
