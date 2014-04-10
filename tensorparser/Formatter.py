@@ -74,7 +74,7 @@ class Formatter(ast.NodeVisitor):
     if (node.func.id=='I'):
       for l in node.args: self.visit_Indicator(l)
     elif (node.func.id in self.CALL2):
-      self.content += node.func.id + '('
+      self.content += self.CALL2[node.func.id] + '('
       self.visit_wrap(node.args[0])
       self.content +=  ','
       self.visit_wrap(node.args[1])

@@ -15,6 +15,8 @@ class JuliaFormat(Formatter.Formatter):
     self.BinOpMid = { "Mult":".*", "Add":".+", "Div":"./", "Sub":".-" }
     self.Compare = { "Gt":".>","GtE":".>=","Lt":".<","LtE":".<=" }
     self.INDEX_LINEARISE =1
+    self.CALL2 = { "max":"max", "min":"min"}
+
 
   def func_header(self,tp):
     return ""
