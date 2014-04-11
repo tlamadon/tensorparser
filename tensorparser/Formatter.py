@@ -149,6 +149,8 @@ class Formatter(ast.NodeVisitor):
     # add a commenter with the formula
     s += self.addComment( "Generated tensor:") + self.CR
     s += self.addComment( tp.name + " " + tp.Eraw + " | " + tp.Vraw ) + self.CR
+    if ("desc" in tp.tdesc.keys()):
+      s += self.addComment(tp.tdesc["desc"]) + self.CR
     # print function signature
     s += self.declareCall(tp,sizes) + self.CR
 

@@ -87,13 +87,14 @@ class TensorParser:
    From this class, the formatter should be able to generate the code for the module.
   """
 
-  def __init__(self,name,E,vars):
+  def __init__(self,name,E,vars,tdesc):
     self.Eraw = E
     self.Vraw = vars
     self.expr = E
     self.Et = ast.parse(E)
     self.vars = vars.split(',')
     self.name = name.strip()
+    self.tdesc = tdesc
 
     self.index_out   = vars.split(',')
 
