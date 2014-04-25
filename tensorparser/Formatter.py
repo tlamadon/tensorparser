@@ -91,9 +91,13 @@ class Formatter(ast.NodeVisitor):
     if (nn=='Pow'):
       self.visit_Pow(node.left,node.right)
     elif (nn in self.BinOpMid.keys()):
+      if (nn in ["Add","Sub"]):
+        self.content += '('
       self.visit_wrap(node.left)
       self.content += self.BinOpMid[nn]
       self.visit_wrap(node.right)
+      if (nn in ["Add","Sub"]):
+        self.content += ')'
 
   def visit_Compare(self,node):
     self.visit_wrap(node.left)

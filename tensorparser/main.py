@@ -15,7 +15,7 @@ can generate fortran, c++, or anything else that can be useful
 import ast
 import tensorparser.FormatterJulia
 format = tensorparser.FormatterJulia.JuliaFormat()
-tp = tensorparser.TensorParser("T_hire      " , "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x")
+tp = tensorparser.TensorParser("T_hire      " , "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]","x",)
 print format.declareFunction(tp)
 
 

@@ -11,6 +11,11 @@
     "T_fire" : {
      "expr" : "I(S[x,y2] - Z[z1] >= 0 ) * G[z1] * V[y2]",
      "args" : "x"
+    },
+
+    "T_fire2" : {
+     "expr" : "(S[x,y2] - Z[z1]) * G[z1]",
+     "args" : "x"
     }
 
   }
