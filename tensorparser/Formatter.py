@@ -152,7 +152,9 @@ class Formatter(ast.NodeVisitor):
 
     # add a commenter with the formula
     s += self.addComment( "Generated tensor:") + self.CR
-    s += self.addComment( tp.name + " " + tp.Eraw + " | " + tp.Vraw ) + self.CR
+    s += self.addComment( ".. py:function:: ",False) + tp.name + self.CR
+    s += self.addComment( "") + self.CR
+    s += self.addComment( "  " +  tp.Eraw + " | " + tp.Vraw ) + self.CR
     if ("desc" in tp.tdesc.keys()):
       s += self.addComment(tp.tdesc["desc"]) + self.CR
     # print function signature
@@ -218,8 +220,11 @@ class Formatter(ast.NodeVisitor):
     return "end"
   def declareSetResultTozero(self):
     return self.LHS + "= 0"
-  def addComment(self,s):
-    return self.COMMENT + ' ' + s
+  def addComment(self,s,space=True):
+    if space:
+      return self.COMMENT + ' ' + s
+    else:
+      return self.COMMENT + s
   def getFileExtension(self):
     return "." + self.FILE_EXTENSION
   def declareModuleHeader(self,name,tensors):

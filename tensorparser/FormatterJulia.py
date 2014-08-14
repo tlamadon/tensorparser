@@ -10,7 +10,7 @@ class JuliaFormat(Formatter.Formatter):
     self.SUBSCRIPT_L = '['
     self.SUBSCRIPT_R = ']'
     self.POW = '.^'
-    self.COMMENT ="#"
+    self.COMMENT ="#'"
     self.FILE_EXTENSION="jl"
     self.BinOpMid = { "Mult":".*", "Add":".+", "Div":"./", "Sub":".-" }
     self.Compare = { "Gt":".>","GtE":".>=","Lt":".<","LtE":".<=" }
@@ -76,7 +76,8 @@ class JuliaFormat(Formatter.Formatter):
     return s
 
   def declareModuleHeader(self,name,tensors):
-    rr = "module " + name +self.CR
+    rr = "#'.. py:module:: " + name + self.CR
+    rr += "module " + name +self.CR
     rr += "export " + ",".join(tensors)
     return rr
 
